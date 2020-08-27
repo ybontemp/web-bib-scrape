@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  
+  
+  <!-- Font Awesome -->
+    <link href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <!-- MDB -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.css" rel="stylesheet"/>
+    <!-- MDBootstrap Datatables  -->
+
+    {% load static %}
+    <link href="{% static 'css/addons/datatables.min.css' %}" rel="stylesheet">
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="{% static 'js/addons/datatables.min.js' %}"></script>
+  {% block style%}{% endblock%}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    {% csrf_token %} 
+    {% load static %}
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#"><img src="{% static 'bibscrape/img/icon.svg' %}" width="30" height="30" alt=""></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/bib/search">Catalogue</a>
+                    <li class="nav-item">
+                    <a class="nav-link" href="/bib/wishlist">Favoris</a>                    
+                </li>                   
+                </ul>
+                <form class="form-inline navbar-form" action="search">
+                    <div class="input-group mb-3">        
+                        <input
+                        name="q"
+                        type="text"
+                        class="form-control"
+                        placeholder=""
+                        aria-label="Rechercher sur le titre, l'auteur, l'EAN, etc"
+                        />
+                        <button class="btn btn-outline-primary" type="submit" data-ripple-color="dark">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </header>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block script %}
+    {% endblock %}
+
+
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.js"
+></script>
+
+ 
+</body>
+</html>

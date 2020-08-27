@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %} Result for {{ search }} {% endblock %}
+
+{%block style} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'bibscrape/css/style.css' %}"/>
+{%endblock}
+
+{% block content %}                
+<div class="container">
+    {% for book_copy in book_copies %}
+        <div class="row gy-5">
+            <div class="col-md-2 gy-5">
+                <div class="btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-primary-outline {% if book_copy.in_wishlist %} active {%endif%}">
+                      <input type="checkbox" {% if book_copy.in_wishlist %} checked {%endif%} autocomplete="off"
+                      onclick="{% if book_copy.in_wishlist != 'None' %} remove_from_wishlist {% else %} add_to_wishlist {% endif %} ( '{{ book_copy.hash }}', '{{ book_copy.book.title }}', '{{ book_copy.book.ean }}')">Favori
+                    </label>
+                  </div>
+            </div>
+            <div class="col-md-5">                            
+                <span class="book-availability-badge badge {% if book_copy.available == 'Disponible'%} bg-primary
+                {% elif book_copy.available == 'QUARANTAINE' %} bg-secondary
+                {% else %} bg-danger
+                {% endif %}">
+                    <i class="fas fa-fw  {% if book_copy.available == 'Disponible'%} fa-check
+                                    {% elif book_copy.available == 'QUARANTAINE' %} fa-head-side-mask
+                                    {% else %} fa-times
+                                    {% endif %}"
+                        title="{{ book_copy.available }}">
+                    </i>   
+                </span>
+                <span class="book-title">{{ book_copy.book.title }}</span></div>            
+            <div class="col-md-3">{{ book_copy.location }}</div> 
+            <div class="col-md-2">{{ book_copy.section }}</div>           
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block script %}
+    {% load static %}
+    <script type="text/javascript">
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+
+    function add_to_wishlist(hash, title, ean) {        
+        $.ajax({ 
+            url : '/bib/wishlist',
+            type : 'post', 
+            data : {'title' : title, 'ean' : ean, 'hash' : hash, 'action' : 'add'}, 
+            success : function(data,status){ console.log(status)},
+            error : function(data, status){console.log("error : " + status + JSON.stringify(data))},
+            dataType : 'json',
+            headers : {
+                'X-CSRFToken' : csrftoken
+            }        
+        })
+    }
+
+    function remove_from_wishlist(hash, title, ean) {
+        console.log("hello")
+        $.ajax({ 
+            url : '/bib/wishlist',
+            type : 'post', 
+            data : {'title' : title, 'ean' : ean, 'hash' : hash, 'action' : 'del'}, 
+            success : function(data,status){ console.log(status)},
+            error : function(data, status){console.log("error : " + status)},
+            dataType : 'json',
+            headers : {
+                'X-CSRFToken' : csrftoken
+            }        
+        })
+    }
+    </script>
+
+{% endblock %}
