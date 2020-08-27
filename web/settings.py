@@ -26,7 +26,7 @@ SECRET_KEY = 'a^a@5h@k3d_ed(#n3p_@1470qpibd!tdf#q8p&j*l_g=(+#7x#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bibeasy.herokuapp.com']
 
 
 if DEBUG:
