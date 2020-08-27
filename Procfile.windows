@@ -1,0 +1,2 @@
+release: python web\manage.py migrate
+web: python web\manage.py runserver
